@@ -33,6 +33,8 @@ real (kind = 8)		:: dz				! Impurity position change corresponding to a
 										! 	z-distance traveled in dt at velocity v(3)
 real (kind = 8)		:: zcontinue = 0	! z-position to continue from. Usually zero	
 real (kind = 8)		:: zfin				! Total z-distances traveled after tevo	
+real (kind = 8)		:: excpl_excl_radius ! Radius within contributions to the convolution
+										 !integral due to an exciplex are excluded	
 real (kind = 8) , parameter	:: mp_u = 0.0207569277d0  	! proton mass in Angs**-2 * Kelvin**-1, go figure!
 real (kind=8)	, parameter	::	Ktops=7.63822291d0
 real (kind = 8), ALLOCATABLE	:: x(:), y(:), z(:)		! Values in X, Y and Z
@@ -43,7 +45,7 @@ complex(kind = 8), ALLOCATABLE	:: psi(:,:,:)			! Wave Function. Density = MOD(ps
 !$ CALL OMP_SET_DYNAMIC(OMP_Dynamic_Enable)
 
 40 format(5e26.15)
-namelist /input/ selec, fileden, mode, zcontinue, tevo, dt, r_cutoff, umax, mimpur                             
+namelist /input/ selec, fileden, mode, zcontinue, tevo, dt, r_cutoff, umax, mimpur, excpl_excl_radius                             
 read(5,nml=input)
 mimpur = mimpur * mp_u
 
@@ -98,7 +100,9 @@ IF (mode == 0) THEN		! Uses all the densities
 				rXden(2) = rimp(2) - y(iy)
 				rXden(3) = rimp(3) - z(iz)
 				r = SQRT(sum(rXden * rXden))
-				sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
+				if (r >= excpl_excl_radius) then ! ONLY ADD CONTRIBUTIONS FROM DROPLET, NOT EXCIPLEX
+					sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
+			end if
 			END DO
 		END DO
 	END DO
