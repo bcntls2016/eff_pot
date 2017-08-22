@@ -62,10 +62,7 @@ read(1,*) invar
 read(1,*) psi
 close(1)
 
-den = Conjg(psi) * psi
-hx = 2.0d0*abs(xmax)/(nx)
-hy = 2.0d0*abs(ymax)/(ny)
-hz = 2.0d0*abs(zmax)/(nz)    
+den = Conjg(psi)*psi
 dxyz = hx*hy*hz
     
 !$OMP PARALLEL

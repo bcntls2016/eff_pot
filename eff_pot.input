@@ -1,0 +1,12 @@
+&input
+	selec				= 'Rb_pi'
+	r_cutoff			= 2.11671d0
+	umax				= 4.859337d3
+	fileden				= "djogger.dat"
+	mode				= 0d0	! Put to 0 to see explanation
+	zcontinue			= 0d0
+	tevo				= 0d0
+	dt					= 0.1d0
+	mimpur				= 85.4678d0
+	excpl_excl_radius	= 5d0
+/
