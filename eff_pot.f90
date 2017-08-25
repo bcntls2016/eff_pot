@@ -88,7 +88,8 @@ END DO
 
 write(*,*) rimp
 
- Call Updatepoten(rimp)
+call potenimpini()
+!Call Updatepoten(rimp)
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! 

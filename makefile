@@ -12,7 +12,7 @@ LD_FLAGS = -threads -I${MKLROOT}/include/fftw -mkl=parallel -qopt-matmul
 PROGNAME = eff_pot
 
 #   Fortran objects
-objs = eff_pot.o titols.o V_impur.o modules.o potenimp.o
+objs = eff_pot.o titols.o V_impur.o modules.o potenimp.o potenimpini.o
 
 .SUFFIXES: .f90 .f .o
 $(PROGNAME): $(objs)
