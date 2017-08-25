@@ -1,18 +1,3 @@
-Module Impressio
-
-Type, Public  :: info_printout
-  Character (len=60) :: namefile
-  Character (Len=80) :: selec_gs
-  Integer   (Kind=4) :: it, it0, nx, ny, nz
-  Real      (Kind=8) :: r2(3), cm(3), ang(3), rimp(3), vimp(3), dtps, Ekin, Elj, Ecor, auxn4
-  Real      (Kind=8) :: Ealphas, Esolid, Ekinx, EVx, Etot
-  Real      (Kind=8) :: Time0, Time, hx, hy, hz, xmax, ymax, zmax
-  Real      (Kind=8) :: r_cutoff_gs
-  Real      (Kind=8) :: umax_gs
-  Complex   (Kind=8), Allocatable :: psi(:,:,:)
-End type info_printout
-
-End Module Impressio        
 !------------------------------------------------------------------
 !---                    MODULES                                 ---
 !------------------------------------------------------------------
@@ -44,7 +29,8 @@ real    (kind=8)              :: ealphas          ! Alpha_s term
 real    (kind=8)              :: ecor4            ! Correlation contribution
 real    (kind=8)              :: eimpu            ! Impurity energy
 real    (kind=8)              :: eHeX             ! Interaction He-X energy
-real    (kind=8)              :: esolid             ! Solid term
+real    (kind=8)              :: eso              ! Spin-Orbit contribution
+real    (kind=8)              :: esolid           ! Solid term
 end module energies
 !------------------------------------------------------------------
 module field
@@ -76,7 +62,6 @@ integer (kind=8)              :: pfftbk_1    ! Pointer for FFT bakward
 integer (kind=8)              :: pfftbk_1x   ! Pointer for FFT bakward
 integer (kind=8)              :: pfftbk_2y   ! Pointer for FFT bakward
 integer (kind=8)              :: pfftbk_3z   ! Pointer for FFT bakward
-! Removed by Manu/Francois
 !integer (kind=4)              :: nthread=1   ! Number of threads
 integer (kind=4)              :: npx,npy,npz ! Number of of points (axis)
 real    (kind=8)              :: renor       ! Inverse of (nx*ny*nz)
@@ -142,7 +127,6 @@ real      (kind=8)               :: alphas= 54.31d0         ! K ^-1 \AA**3
 real      (kind=8)               ::      l= 1.0d0           ! \AA
 real      (kind=8)               ::  den0s= 0.04d0          ! \AA**-3
 real      (kind=8)               :: h2o2m4= 6.05969638298d0 ! \hbar**2 / (2 m_4)
-logical                          :: lsolid=.true. ! Sumem els termes de la funcional solida
 real      (kind=8)               :: C = 3.1577504d4
 real      (kind=8)               :: beta= 40.d0
 real      (kind=8)               :: den_m = 0.37d0
@@ -156,9 +140,7 @@ module impur
 ! integer   (kind=4)               :: rimp(3)      ! Coordinates of the impurity.
 logical                          :: limp=.false. ! T-> Impurity, F->Pure
 real      (kind=8)               :: umax=400.d0  ! Maximum value for the potential
-real      (kind=8)               :: r_cutoff=2.0d0 ! Cut_off del potencial
-Character (Len=80)               :: selec=''
-Integer   (kind=8)               :: nq=1000      ! Number of q-values for Patil
+integer   (kind=8)               :: nq=1000      ! Number of q-values for Patil
 real      (kind=8)               :: tol=1.d-7    ! Tolerance for Romberg
 real      (kind=8)               :: rmin=3.d0    ! Core For Patil
 complex   (kind=8),allocatable   :: vq(:,:,:)    ! Fourier of Patil Potential
@@ -227,7 +209,6 @@ real    (kind=8), allocatable :: wcgk(:,:,:)     ! Kernel of coarse graining
                                                  ! in fourier space
 real    (kind=8)              :: denmin=1.d-60   ! Minimum value for densities.
 real    (kind=8)              :: psimin=1.d-30   ! Minimum value for densities.
-Logical                       :: Ldensity=.true.
 
 end module rho
 
@@ -281,7 +262,6 @@ end module rkpc
 !------------------------------------------------------------------
 module classicimp
 real    (kind=8)              :: rimp(3)
-! real    (kind=8)              :: tmprimp(3) ! temporal rimp used to computed uimp.
 real    (kind=8)              :: vimp(3)
 real    (kind=8)              :: aimp(3)
 real    (kind=8)              :: ximp=0.0d0   ! Position of the impurity  X-ccordinate.
@@ -290,16 +270,53 @@ real    (kind=8)              :: zimp=0.0d0   !  "        "  "   "        Z-Coor
 real    (kind=8)              :: vximp=0.0d0  ! Velocity of the impurity  X-ccordinate.
 real    (kind=8)              :: vyimp=0.0d0  !  "        "  "   "        Y-Coordinate
 real    (kind=8)              :: vzimp=0.0d0  !  "        "  "   "        Z-Coordinate
-real    (kind=8), allocatable :: uimp(:,:,:)  !  Potencial from imp for He
-logical                       :: lselection = .true.
-
+real    (kind=8), allocatable :: uimp(:,:,:)  !  Potential from imp for He
+real    (kind=8), allocatable :: uHe_He(:,:,:)!  Potential  He-He at impurity position
+real    (kind=8)              :: Ev0=0.0d0    !  Valor propi del estat que agafem
+real    (kind=8)              :: z_exciplex_exclusion=0.0d0 ! Value around the impurity in order to exclude the exciplex contribution
+real    (kind=8)              :: z_exciplex_position =-3.5d0 ! Exciplex position respect the impurity
 
 !real    (kind=8), allocatable :: pairpot(:,:,:,:)  !  Potencial from imp for He
 !
+Logical                          :: Lfilter_exciplex_force=.false. ! To exclude the exciplex when we compute the force
+Logical                          :: Lprint_invar=.false.
+Logical                          :: Lexcite_state=.false.
+Logical                          :: Lexcite_state_external=.false.
+Logical                          :: Lexcite_state_fix=.false.
+Logical                          :: Lexciplex_state_fix=.false.
+character (len=6)                :: Exciplex='Ring' ! Or 'Linear'
+real      (kind=8)               :: r_exc=3.9d0    ! To fix the radial position of lineal or ring shape exciplex
+complex (kind=8)              :: SOD(10,10)
+complex (kind=8), allocatable :: invar(:), invar0(:)
+complex (kind=8), allocatable :: Hinvar(:)
+complex (kind=8), allocatable :: qiv(:)
+complex (kind=8), allocatable :: invarold(:,:)
+complex (kind=8), allocatable :: Hinvarold(:,:)
+integer (kind=4)              :: ioldiv(3)
+integer (kind=4)              :: ioldhiv(3)
+integer (kind=4)              :: ninvar = 10
+integer (kind=4)              :: instate = -1
+complex (kind=8), allocatable :: pciv(:)
+real      (kind=8)               :: Xnew=1.d0     ! Parameter to mix old & new Uext excited potentials (see instates)
+Logical                          :: Lfirst=.true.
+character (len = 1)              :: Lstate='P'
+character (len = 1)              :: Lexciplex_axis='Z'
+real      (kind=8)   :: a_pi_3o2=0.94,a_sig_1o2=0.34117444d0 ! Amplitudes of Pi_3/2 and Sigma_1o2 states, the rest will be the Pi=1o2
+Logical                          :: Lmixture=.false.
+Logical                          :: Lfix_lambda=.false.
+Logical                          :: Laverage_P_value=.false.
+Logical                          :: Ldiag_jz=.false.
+character (len = 4)  :: Ljz='' ! Per  Lstate='P',  -3/2, -1/2, +1/2, +3/2; Si posem '', per instate=0 | Correspond a j=1/2, Ljz ='', Ljz='-1/2', '+1/2'
+                               !             per instate=1 ---> Ljz='-3/2'  | correspond a j=3/2
+                               !             per instate=2 ---> Ljz='-1/2'  |
+                               !
+                               ! Per Lstate='D',  -5/2, -3/2, +1/2, +5/2, +3/2, +1/2; Si posem Ljz='', per instate=0 ---> Ljz='-3/2'  |  Correspond a j=3/2
+                               !                                                                       per instate=1 ---> Ljz='-1/2'  |
+                               !                                                                   per instate=2 ---> Ljz='-5/2'  |
+                               !                                                                   per instate=3 ---> Ljz='-3/2'  |  Correspond a j=5/2
+                               !                                                                   per instate=4 ---> Ljz='-1/2'  |
 
 
-! real    (kind=8), allocatable :: uextimp(:,:,:)  !  External potencial for the impurity
-! real    (kind=8)              :: mimp ! Impurity mass, expressed in Kelvin*(ps/A)**2
 ! cosas para step(rk/pc):
 real    (kind=8)              :: qr(3)
 real    (kind=8)              :: qv(3)
@@ -312,9 +329,17 @@ integer (kind=4)              :: iolda(2)
 real    (kind=8)              :: pcr(3)
 real    (kind=8)              :: pcv(3)
 !
-real    (kind=8) , parameter   :: mp_u = 0.02061484d0  ! proton mass in Angs**-2 * Kelvin**-1, go figure!
-real    (kind=8)               :: mAg_u = 0.d0  ! argon mass in Angs**-2 * Kelvin**-1, go figure!
+real    (kind=8) , parameter   :: mp_u = 0.0207569277d0  ! proton mass in Angs**-2 * Kelvin**-1, go figure!
+!real    (kind=8) , parameter   :: mAg_u = 2.83099 ! argon mass in Angs**-2 * Kelvin**-1, go figure!
+real    (kind=8)               :: mAg_u = 0.0d0 ! argon mass in Angs**-2 * Kelvin**-1, go figure!
 real    (kind=8)               :: dVomAg  ! dxyz/argon mass
+real    (kind=8)               :: Also2   ! L*S coupling amplitude for argon. Experimental. Als/2 in Hernando's paper.
+real    (kind=8)               :: Als=0.0d0, Als_P=0.0d0, Als_D=0.0d0    ! Spin-orbit spliting
+
+
+COMPLEX (kind=8), ALLOCATABLE :: ev1pSO(:), ev2pSO(:), ev3pSO(:), ev4pSO(:) !Eigenvectors SO Matrix (P state)
+COMPLEX (kind=8), ALLOCATABLE :: ev5pSO(:), ev6pSO(:), evpSO(:,:)
+COMPLEX (kind=8), ALLOCATABLE :: prodLambda(:) !Proyection < Lambda | Lambda_SO >
 
 ! logical                        :: newpoten = .true.
 end module classicimp
@@ -362,9 +387,14 @@ end module Aziz
 !------------------------------------------------------------------
 module interpol
 real      (kind=8) :: DelInter
-real      (kind=8) , allocatable :: potion(:) 
+real      (kind=8) , allocatable :: potHe_He(:) 
+real      (kind=8) , allocatable :: potpi(:) 
+real      (kind=8) , allocatable :: potdel(:) 
+real      (kind=8) , allocatable :: potpidel(:)
+real      (kind=8) , allocatable :: potsigdel(:)
 integer   (kind=4) :: npot
-!real      (kind=8) , allocatable :: Vion(:,:,:) 
-!real      (kind=8) :: lastr(3)
+real      (kind=8) , allocatable :: Vpi(:,:,:),Pi_Del(:,:,:),Sig_Del(:,:,:)
+real      (kind=8) , allocatable :: Delta(:,:,:) 
+real      (kind=8) :: lastr(3)
 end module interpol
 !------------------------------------------------------------------
