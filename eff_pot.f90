@@ -86,69 +86,71 @@ END DO
 !$OMP END DO
 !$OMP END PARALLEL
 
+write(*,*) rimp
+
  Call Updatepoten(rimp)
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-IF (mode == 0) THEN		! Uses all the densities
-	!$OMP PARALLEL PRIVATE(ix,iy,iz,rXden,r)
-	!$OMP DO REDUCTION(+:sumConvolution)  
-	DO iz=1,nz
-		DO iy = 1,ny
-			DO ix = 1,nx	    
-				rXden(1) = rimp(1) - x(ix)
-				rXden(2) = rimp(2) - y(iy)
-				rXden(3) = rimp(3) - z(iz)
-				r = SQRT(sum(rXden * rXden))
-				if (r >= excpl_excl_radius) then ! ONLY ADD CONTRIBUTIONS FROM DROPLET, NOT EXCIPLEX
-					sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
-			end if
-			END DO
-		END DO
-	END DO
-	!$OMP END DO
-	!$OMP END PARALLEL    
-	sumConvolution = sumConvolution * dxyz
-	v = SQRT(sum(vimp * vimp))
-	Ekin = 0.5 * mimpur * v * v
-	vasymp = SQRT(2 * (Ekin + sumConvolution) / mimpur)
-	WRITE(6,40) rimp(3) + zimp, v / Ktops, Ekin, sumConvolution, vasymp / Ktops
-	CALL FLUSH(6)
-END IF 
-  
-If (mode == 1) THEN !Mode == 1, uses only one density and changes the z-axis position of the impurity by hand
-	dz = vimp(3) / Ktops * dt
-	zfin = tevo / dt * dz + zcontinue
-	OPEN(unit = 10, file = "status.dat")
-	WRITE(6,*) "# rimp(3)+zimp [A], v* [A/ps], Ekin [K], sumConvolution [K], v+ [A/ps]"
-	CALL FLUSH(6)
-	DO zimp = zcontinue + dz, zfin, dz    
-		sumConvolution = 0.d0
-		!$OMP PARALLEL PRIVATE(ix,iy,iz,rXden,r)
-		!$OMP DO REDUCTION(+:sumConvolution)
-		DO iz=1,nz
-			DO iy = 1,ny
-				DO ix = 1,nx
-					rXden(1) = rimp(1) - x(ix)
-					rXden(2) = rimp(2) - y(iy)
-					rXden(3) = rimp(3) - z(iz) + zimp 	      
-					r = SQRT(sum(rXden * rXden))
-					sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
-				END DO
-			END DO
-		END DO
-		!$OMP END DO
-		!$OMP END PARALLEL
-		sumConvolution = sumConvolution * dxyz
-		v = SQRT(sum(vimp * vimp))
-		Ekin = 0.5 * mimpur * v * v
-		vasymp = SQRT(2 * (Ekin + sumConvolution) / mimpur)
-		WRITE(6,40) rimp(3) + zimp, v / Ktops, Ekin, sumConvolution, vasymp / Ktops
-		CALL FLUSH(6)
-		WRITE(10,*), zimp, " - DONE"
-	END DO
-	
-	CLOSE(10)
-END IF
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! 
+! IF (mode == 0) THEN		! Uses all the densities
+! 	$OMP PARALLEL PRIVATE(ix,iy,iz,rXden,r)
+! 	$OMP DO REDUCTION(+:sumConvolution)  
+! 	DO iz=1,nz
+! 		DO iy = 1,ny
+! 			DO ix = 1,nx	    
+! 				rXden(1) = rimp(1) - x(ix)
+! 				rXden(2) = rimp(2) - y(iy)
+! 				rXden(3) = rimp(3) - z(iz)
+! 				r = SQRT(sum(rXden * rXden))
+! 				if (r >= excpl_excl_radius) then ! ONLY ADD CONTRIBUTIONS FROM DROPLET, NOT EXCIPLEX
+! 					sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
+! 			end if
+! 			END DO
+! 		END DO
+! 	END DO
+! 	$OMP END DO
+! 	$OMP END PARALLEL    
+! 	sumConvolution = sumConvolution * dxyz
+! 	v = SQRT(sum(vimp * vimp))
+! 	Ekin = 0.5 * mimpur * v * v
+! 	vasymp = SQRT(2 * (Ekin + sumConvolution) / mimpur)
+! 	WRITE(6,40) rimp(3) + zimp, v / Ktops, Ekin, sumConvolution, vasymp / Ktops
+! 	CALL FLUSH(6)
+! END IF 
+!   
+! If (mode == 1) THEN !Mode == 1, uses only one density and changes the z-axis position of the impurity by hand
+! 	dz = vimp(3) / Ktops * dt
+! 	zfin = tevo / dt * dz + zcontinue
+! 	OPEN(unit = 10, file = "status.dat")
+! 	WRITE(6,*) "# rimp(3)+zimp [A], v* [A/ps], Ekin [K], sumConvolution [K], v+ [A/ps]"
+! 	CALL FLUSH(6)
+! 	DO zimp = zcontinue + dz, zfin, dz    
+! 		sumConvolution = 0.d0
+! 		$OMP PARALLEL PRIVATE(ix,iy,iz,rXden,r)
+! 		$OMP DO REDUCTION(+:sumConvolution)
+! 		DO iz=1,nz
+! 			DO iy = 1,ny
+! 				DO ix = 1,nx
+! 					rXden(1) = rimp(1) - x(ix)
+! 					rXden(2) = rimp(2) - y(iy)
+! 					rXden(3) = rimp(3) - z(iz) + zimp 	      
+! 					r = SQRT(sum(rXden * rXden))
+! 					sumConvolution = sumConvolution + (den(ix,iy,iz) * Select_Pot(selec,r,r_cutoff,umax))
+! 				END DO
+! 			END DO
+! 		END DO
+! 		$OMP END DO
+! 		$OMP END PARALLEL
+! 		sumConvolution = sumConvolution * dxyz
+! 		v = SQRT(sum(vimp * vimp))
+! 		Ekin = 0.5 * mimpur * v * v
+! 		vasymp = SQRT(2 * (Ekin + sumConvolution) / mimpur)
+! 		WRITE(6,40) rimp(3) + zimp, v / Ktops, Ekin, sumConvolution, vasymp / Ktops
+! 		CALL FLUSH(6)
+! 		WRITE(10,*), zimp, " - DONE"
+! 	END DO
+! 	
+! 	CLOSE(10)
+! END IF
 
 END PROGRAM
