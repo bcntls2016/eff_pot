@@ -64,7 +64,8 @@ close(1)
 
 den = Conjg(psi)*psi
 dxyz = hx*hy*hz
-    
+
+
 !$OMP PARALLEL
 !$OMP DO PRIVATE(ix)    
 DO ix=1,nx  !.................... Grid X
@@ -84,6 +85,8 @@ DO iz=1,nz  !.................... Grid  Z
 END DO
 !$OMP END DO
 !$OMP END PARALLEL
+
+ Call Updatepoten(rimp)
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
