@@ -8,5 +8,4 @@ EKIN=$(awk '/Kinetic energy \(X/{print$5}' res.dat)
 EINT=$(awk '/Interaction energy/{print$5}' res.dat)
 ESO=$(awk '/Spin-Orbit energy/{print$5}' res.dat)
 rm djogger.dat
-echo ${TIME} ${EKIN} ${EINT} ${ESO}
-printf "%f\t%f\t%f\t%f" ${TIME} ${EKIN} ${EINT} ${ESO}
+printf "%.1f\t%f\t%f\t%f" ${TIME} ${EKIN} ${EINT} ${ESO}
