@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### CALL: ./get_impurity_energy.sh path/to/wave-function
+### CALL: ./get_impurity_energy.sh PATH/TO/WAVE/FUNCTION/FILE
 
 INPUT=${1}
 ln -sf ${INPUT} djogger.dat
