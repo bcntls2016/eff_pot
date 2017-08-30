@@ -7,9 +7,11 @@ COMP = ifort
 CFLAGS = -c -O3 -xAVX -align array64byte -qopenmp\
 		 -parallel -qopt-matmul -unroll0 -module ./modules
 LD_FLAGS = -threads -I${MKLROOT}/include/fftw -mkl=parallel -qopt-matmul
-
-# Name of the program
 PROGNAME = 4hetddft-anisotropic
+
+all: $(PROGNAME)
+	cd ..
+	ln -sf src/$(PROGNAME) ../$(PROGNAME)
 
 #   Fortran objects
 objs = init_deriv_parallel.o	modules.o	V_impur.o	DFT4He3d.o	derden.o\
@@ -19,7 +21,7 @@ objs = init_deriv_parallel.o	modules.o	V_impur.o	DFT4He3d.o	derden.o\
 			timer.o				titols.o	vareps.o	varmu.o		tstgrid.o\
 			s13adf.o			pdergc.o	steprk.o	steppc.o	potenimp.o\
 			potenimpini.o		newder.o	redef.o
-#
+
 .SUFFIXES: .f90 .f .o
 $(PROGNAME): $(objs)
 	$(COMP) -o $(PROGNAME) $(objs) $(LD_FLAGS)
@@ -31,4 +33,4 @@ $(PROGNAME): $(objs)
 clean:
 	rm -f *.o *.bak *.lst modules/*.mod;
 distclean:
-	rm -f *.o *.bak *.lst modules/*.mod $(PROGNAME);
+	rm -f *.o *.bak *.lst modules/*.mod $(PROGNAME) ../$(PROGNAME);
