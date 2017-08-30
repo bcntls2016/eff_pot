@@ -1,5 +1,7 @@
 #!/bin/bash
 
+### CALL: ./get_impurity_energy.sh path/to/wave-function
+
 INPUT=${1}
 ln -sf ${INPUT} djogger.dat
 ./4hetddft-anisotropic < input > res.dat
