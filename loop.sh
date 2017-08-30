@@ -8,5 +8,6 @@ OUT="output.dat"
 printf "time (ps)\tEkin (K)\tEint (K)\tESO (K)" >> ${OUT}
 for FILE in ${INPUT}density.*
 do
+	printf "%s\n" ${FILE}
 	./get_impurity_energy.sh ${FILE} >> ${OUT}
 done
