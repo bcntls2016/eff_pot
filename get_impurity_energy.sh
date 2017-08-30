@@ -9,3 +9,4 @@ EINT=$(awk '/Interaction energy/{print$5}' res.dat)
 ESO=$(awk '/Spin-Orbit energy/{print$5}' res.dat)
 rm djogger.dat
 echo ${TIME} ${EKIN} ${EINT} ${ESO}
+printf "%d\t%f\t%d" ${TIME} ${EKIN} ${EINT} ${ESO}
