@@ -1,6 +1,3 @@
-# Prerequisites
-*.d
-
 # Compiled Object files
 *.slo
 *.lo
@@ -31,5 +28,4 @@
 *.out
 *.app
 
-eff_pot
-djogger.dat
+4hetddft-anisotropic*
