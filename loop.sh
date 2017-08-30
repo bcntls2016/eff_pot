@@ -5,7 +5,7 @@
 INPUT=${1}
 OUT="output.dat"
 
-printf "time (ps)\tEkin (K)\tEint (K)\tESO (K)" > ${OUT}
+printf "time (ps)\tEkin (K)\tEint (K)\tESO (K)\n" > ${OUT}
 for FILE in ${INPUT}density.*
 do
 	printf "%s\n" ${FILE}
