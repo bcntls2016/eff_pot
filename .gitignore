@@ -29,3 +29,10 @@
 *.app
 
 4hetddft-anisotropic*
+DFT4He3d.namelist.read
+djogger.dat
+hedenini-*
+input
+res.dat
+uHe_He-z.0.dat
+uimp-*
