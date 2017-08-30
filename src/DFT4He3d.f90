@@ -997,9 +997,9 @@ call flush(6)
 !                  xmax,ymax,zmax,ximp,yimp,zimp,psix,         &
 !                  deltat,iter)
 ! else
-   call printoutc(temps,1,filedenout,fileimpout,psi,nx,ny,nz,hx,hy,hz, &
-                 xmax,ymax,zmax,rimp,vimp,psi,         &
-                 deltatps,iter,invar,ninvar)
+!call printoutc(temps,1,filedenout,fileimpout,psi,nx,ny,nz,hx,hy,hz, &
+!				xmax,ymax,zmax,rimp,vimp,psi, &
+!				deltatps,iter,invar,ninvar)
 ! end if
 
 call timer(t4)
