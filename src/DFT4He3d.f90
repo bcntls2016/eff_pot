@@ -565,445 +565,445 @@ den=Conjg(psi)*psi
 call potenimp(rimp,invar)
 call poten()              ! First Potential  (for Lagrange Equation)
 call energy()             ! Calculate energies
-
-Lfirst = .false.
-Lprint_invar=.false.
-
-If(Ev0.Eq.0.0d0)Ev0 = eHeX + eso
-
-Write(6,'("Energia que fem servir per restar una fase global",/,                 &
-          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
-If(Lfilter_exciplex_force)Then
-  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
-
-ipx = 1.5 +(rimp(1)+xmax)/hx
-ipy = 1.5 +(rimp(2)+ymax)/hy
-ipz = 1.5 +(rimp(3)+zmax)/hz
 !
-!  Open(Unit = 1, File='uimp-x.0.dat')
-!  Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
-!  Do ix=1, nx
-!    Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
+!Lfirst = .false.
+!Lprint_invar=.false.
+!
+!If(Ev0.Eq.0.0d0)Ev0 = eHeX + eso
+!
+!Write(6,'("Energia que fem servir per restar una fase global",/,                 &
+!          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
+!If(Lfilter_exciplex_force)Then
+!  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
+!
+!ipx = 1.5 +(rimp(1)+xmax)/hx
+!ipy = 1.5 +(rimp(2)+ymax)/hy
+!ipz = 1.5 +(rimp(3)+zmax)/hz
+!!
+!!  Open(Unit = 1, File='uimp-x.0.dat')
+!!  Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
+!!  Do ix=1, nx
+!!    Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
+!!  EndDo
+!!  Close(Unit=1)
+!!
+!!  Open(Unit = 1, File='uimp-y.0.dat')
+!!  Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
+!!  Do iy=1, ny
+!!    Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
+!!  EndDo
+!!  Close(Unit=1)
+!!
+!  Open(Unit = 1, File='uHe_He-z.0.dat')
+!  Write(1,'("#z, uHe_He( rimp(1), rimp(2), z )")')
+!  Do iz=1, nz
+!    Write(1,'(1p,2E15.6)')z(iz),UHe_He(ipx,ipy,iz)
 !  EndDo
 !  Close(Unit=1)
+!EndiF
 !
-!  Open(Unit = 1, File='uimp-y.0.dat')
-!  Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
-!  Do iy=1, ny
-!    Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
-!  EndDo
-!  Close(Unit=1)
-!
-  Open(Unit = 1, File='uHe_He-z.0.dat')
-  Write(1,'("#z, uHe_He( rimp(1), rimp(2), z )")')
-  Do iz=1, nz
-    Write(1,'(1p,2E15.6)')z(iz),UHe_He(ipx,ipy,iz)
-  EndDo
-  Close(Unit=1)
-EndiF
-
-call forceimp(rimp,aimp)
-aimp(:) = aimp(:)/mAg_u
-call potinvar(rimp,invar,Hinvar)
-
-
-Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
-
-!    Write(6,'("From Main(1)...")')
-!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
-!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
-!    write(6,'("Invar.....",/,1p,(2E15.8))')(invar(i),i=1,ninvar)
-!    write(6,'("Hinvar....",/,1p,(2E15.8))')(Hinvar(i),i=1,ninvar)
-
-
-! TEST: Treu el valor de uimp
-!call respar(x,y,z,nx,ny,nz,1,'uimp','den',uimp,den)
-
-!
-! Escrivim el valor de Uimp pels aixos que passen per l'impureça
-!
-
-ipx = 1.5 +(rimp(1)+xmax)/hx
-ipy = 1.5 +(rimp(2)+ymax)/hy
-ipz = 1.5 +(rimp(3)+zmax)/hz
-
-!ipx = nx/2 + 1
-!ipy = ny/2 + 1
-!ipz = nz/2 + 1
-
-Open(Unit = 1, File='uimp-x.0.dat')
-Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
-Do ix=1, nx
-  Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
-EndDo
-Close(Unit=1)
-
-Open(Unit = 1, File='uimp-y.0.dat')
-Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
-Do iy=1, ny
-  Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
-EndDo
-Close(Unit=1)
-
-Open(Unit = 1, File='uimp-z.0.dat')
-Write(1,'("#z, uimp( rimp(1), rimp(2), z )")')
-Do iz=1, nz
-  Write(1,'(1p,2E15.6)')z(iz),Uimp(ipx,ipy,iz)
-EndDo
-Close(Unit=1)
-
-write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
-
-  write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
-  write(6,6060) eimpu,ekinx,eHeX,eso,etot
-  write(6,6065) rimp(1),rimp(2),rimp(3)
-
-eold = etot4
-call flush(6)
-
-!!-------------------------------------------------------------------------------
-!!---                            Iterative procedure                           --
-!!-------------------------------------------------------------------------------
-!
-!! TIME CONSTANT !
-!! This time it's a cylinder.
-!do iz=1,nz
-! do iy=1,ny
-!  do ix=1,nx
-!!    rt = dsqrt(x(ix)*x(ix)+y(iy)*y(iy)+z(iz)*z(iz))
-!   rt = dsqrt(x(ix)*x(ix)+y(iy)*y(iy))
-!!    timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((rt-tmean)/tsurf)),1.d0)
-!   !timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((z(iz)-tzmean)/tzsurf)),1.d0)
-!   timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((abs(z(iz))-tzmean)/tzsurf)),1.d0)
-!  enddo
-! enddo
-!enddo
+!call forceimp(rimp,aimp)
+!aimp(:) = aimp(:)/mAg_u
+!call potinvar(rimp,invar,Hinvar)
 !
 !
-!!plot it
-!! call respar(x,y,z,nx,ny,nz,1,'timec','den',timec,den)
-!open(unit=32,file='timec.dat')
-!do iz=1,nz
-! do ix=1,nx
-!  write(32,*)x(ix),z(iz),real(timec(ix,ny/2+1,iz))
-! enddo
-! write(32,*)''
-!enddo
-!close(32)
+!Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
 !
-!open(81,file=filerimp)
-!open(82,file=filevimp)
-!open(83,file=fileaimp)
-!open(84,file=filelambda)
-!
-!
-!! If(limp)Then
-!!   write(81,1381)iter0*deltat,aux1,aux2,aux3,aux4,aux5,aux6
-!! Else
-!
-!! Endif
-!call flush(81)
-!
-!lfilepv  = .false.
-!
-!! write(6,7000)
-!call timer(t5)
-!
-!uext = 0.0d0
-!
-!!       print*,rimp
-!!       print*,vimp
-!qr(:) = 0.d0
-!qv(:) = 0.d0
-!! q(:,:,:)=0.d0
-!rimpold(:,:) = 0.d0
-!vimpold(:,:) = 0.d0
-!aimpold(:,:) = 0.d0
-!
-!!
-!! Eigenvectors of SO matrix (P states)
-!!
-!
-!!  ev1pSO = (/(0.d0,0.d0) , (0.d0,0.d0) , uim        , (0.d0,0.d0), (0.d0,0.d0), (1.d0,0.d0)/)
-!!  ev2pSO = (/(0.d0,0.d0) , (0.d0,0.d0) , (0.d0,0.d0), -uim       , (-1.d0,0.d0), (0.d0,0.d0)/)
-!!  ev3pSO = (/-uim        , (0.d0,0.d0) , (0.d0,0.d0), (0.d0,0.d0), (0.d0,0.d0), uim        /)
-!!  ev4pSO = (/(0.d0,0.d0) , uim	      , (0.d0,0.d0), (0.d0,0.d0), uim        , (0.d0,0.d0)/)
-!!  ev5pSO = (/(0.d0,0.d0) , (-1.d0,0.d0), (0.d0,0.d0), -uim       , (0.d0,0.d0), (0.d0,0.d0)/)
-!!  ev6pSO = (/(1.d0,0.d0) , (0.d0,0.d0) , -uim       , (0.d0,0.d0), (0.d0,0.d0), (0.d0,0.d0)/)
-!! 
-!!  do i = 1,ninvar
-!!     evpSO (i,1) = ev1pSO(i)
-!!     evpSO (i,2) = ev2pSO(i)
-!!     evpSO (i,3) = ev3pSO(i)
-!!     evpSO (i,4) = ev4pSO(i)
-!!     evpSO (i,5) = ev5pSO(i)
-!!     evpSO (i,6) = ev6pSO(i)
-!!  end do
-!
-! evpSO = (0.d0,0.d0)
-! 
-! evpSO(1,3)=-uim
-! evpSO(2,4)=uim
-! evpSO(2,5)=(-1.d0,0.d0)
-! evpSO(1,6)=(1.d0,0.d0)
-! evpSO(4,5)=-uim
-! evpSO(3,6)=-uim
-! 
-! evpSO(3,1)=uim
-! evpSO(4,2)=-uim
-! evpSO(5,2)=(-1.d0,0.d0)
-! evpSO(6,1)=(1.d0,0.d0)
-! evpSO(5,4)=uim
-! evpSO(6,3)=uim
-!
-!if(time0 .LT. 0.d0) time0 = iter0*deltatps
-!write(81,'("# Tiempo(ps), x(AA), y(AA), z(AA)")')
-!write(81,'(1x,1p,E15.6,3E18.10)')time0, rimp(1), rimp(2), rimp(3)
-!write(82,'("# Tiempo(ps), Vx(AA/ps), Vy(AA/ps), Vz(AA/ps)")')
-!write(82,'(1x,1p,E15.6,3E18.10)')time0, vimp(1)*pstoK, vimp(2)*pstoK, vimp(3)*pstoK
-!write(83,'("# Tiempo(ps), Ax(AA/ps**2), Ay(AA/ps**2), Az(AA/ps**2)")')
-!write(83,'(1x,1p,E15.6,3E18.10)')time0, aimp(1)*pstoK*pstoK, aimp(2)*pstoK*pstoK, aimp(3)*pstoK*pstoK
-!write(84,'(I10,1p,20E18.10)')iter0, invar
-!
-!open(11,file='projections.dat')
-!
-!      prodLambda = 0.d0
-!      do i=1,ninvar
-!	prodLambda(i) = DOT_PRODUCT(conjg(invar),evpSO(i,:))
-!      end do 
-!	aux1 = DOT_PRODUCT(invar,prodLambda)*0.5
-!  
-!      auxn4 = sum(den)*dxyz
-!   
-!      write(11,'("# Iteracion, <L·S>, |<Lamb0|Lambt>|**2")')
-!      write(11,'(I10,1p,2E16.8)') iter0,aux1,ABS(DOT_PRODUCT(invar0,invar))**2
-!
-!iter0=iter0+1
-!
-!
-!do iter=iter0,niter  ! <--------- Iterative procedure starts here.
-!
-!!    Write(6,'("From Main(2)...")')
+!!    Write(6,'("From Main(1)...")')
 !!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
 !!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
 !!    write(6,'("Invar.....",/,1p,(2E15.8))')(invar(i),i=1,ninvar)
 !!    write(6,'("Hinvar....",/,1p,(2E15.8))')(Hinvar(i),i=1,ninvar)
 !
-!    if(iter.le.(2+iter0).Or.lrk)then
-!      call steprk(deltat)
 !
-!    else
-!      call steppc(deltat,ErrHe,Errrimp,Errvimp,Erriv)
+!! TEST: Treu el valor de uimp
+!!call respar(x,y,z,nx,ny,nz,1,'uimp','den',uimp,den)
 !
-!      write(6,'(" Steppc: ErrHe, Errrimp, Errvimp, Erriv...",1p,4E15.6)')ErrHe, Errrimp, Errvimp, Erriv
-!
-!    endif
-!
-!
-!    call potenimp(rimp,invar)
-!    call poten()
-!    call forceimp(rimp,aimp)
-!    aimp(:) = aimp(:)/mAg_u
-!    call potinvar(rimp,invar,Hinvar)
-!
-!    aux1 = time0 + (iter-iter0+1)*deltatps
-!    temps = aux1
-!
-!write(81,'(1x,1p,E15.6,3E18.10)')aux1, rimp(1), rimp(2), rimp(3)
-!write(82,'(1x,1p,E15.6,3E18.10)')aux1, vimp(1)*pstoK, vimp(2)*pstoK, vimp(3)*pstoK
-!write(83,'(1x,1p,E15.6,3E18.10)')aux1, aimp(1)*pstoK*pstoK, aimp(2)*pstoK*pstoK, aimp(3)*pstoK*pstoK
-!
-!call flush(81)
-!call flush(82)
-!call flush(83)
 !!
-!! Proyección < lambda | lambda_SO >
+!! Escrivim el valor de Uimp pels aixos que passen per l'impureça
 !!
 !
-!   if(mod(iter,pener).eq.0) then          ! Compute New energy and max of density
-!   
-!      prodLambda = 0.d0
-!      do i=1,ninvar
-!	prodLambda(i) = DOT_PRODUCT(invar,evpSO(:,i))
-!      end do 
-!	aux1 = DOT_PRODUCT(conjg(invar),prodLambda)*0.5
-!  
-!      auxn4 = sum(den)*dxyz
-!      
-!      write(11,'(I10,1p,2E16.8)') iter,aux1,ABS(DOT_PRODUCT(invar0,invar))**2
-!   
-!      call energy()
-!      print*," "
-!      print*,"Iteration:", iter
-!      print*," "
-!      write(*,*)'... Internal Variables ...'
-!!       do ix=1,ninvar
-!!        write(*,'("invar ",I1,1X,2E13.5)')ix,real(invar(ix)),aimag(invar(ix))
-!!       enddo
-!      write(*,*)'..........................'
-!      write(*,*)'Mod of internal vars:',sum(abs(invar)**2)
-!      
-!      write(84,'(I10,1p,20E18.10)')iter, invar
-!      call flush(84)
-!      write(6,'("Re, Img, Mod: 1,2...",/,(0p,I4,1p,3E16.8))') (ix,real(invar(ix)), aimag(invar(ix)), abs(invar(ix)**2),ix=1,ninvar)
-!      
-!      write(6,7010) auxn4,etot4,(etot4-eold),etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
-!!      call varmu(n4,mu4,errmu4)           ! Error in mu4
-!      write(6,7017) mu4,errmu4
+!ipx = 1.5 +(rimp(1)+xmax)/hx
+!ipy = 1.5 +(rimp(2)+ymax)/hy
+!ipz = 1.5 +(rimp(3)+zmax)/hz
 !
-!           write(6,7015) eimpu,ekinx,eHeX,eso,etot
+!!ipx = nx/2 + 1
+!!ipy = ny/2 + 1
+!!ipz = nz/2 + 1
 !
-!      eold = etot4
+!!Open(Unit = 1, File='uimp-x.0.dat')
+!!Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
+!!Do ix=1, nx
+!!  Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
+!!EndDo
+!!Close(Unit=1)
+!!
+!!Open(Unit = 1, File='uimp-y.0.dat')
+!!Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
+!!Do iy=1, ny
+!!  Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
+!!EndDo
+!!Close(Unit=1)
+!!
+!!Open(Unit = 1, File='uimp-z.0.dat')
+!!Write(1,'("#z, uimp( rimp(1), rimp(2), z )")')
+!!Do iz=1, nz
+!!  Write(1,'(1p,2E15.6)')z(iz),Uimp(ipx,ipy,iz)
+!!EndDo
+!!Close(Unit=1)
 !
-!        call r_cm(den,n4,xcm4,ycm4,zcm4)    ! Center of mass of 4He Drop
-!        write(6,7100) xcm4,ycm4,zcm4
-!        write(*,*)'Impurity position:',rimp
-!        write(*,*)'Impurity velocity:',vimp
+!write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 !
-!   end if
+!  write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+!  write(6,6060) eimpu,ekinx,eHeX,eso,etot
+!  write(6,6065) rimp(1),rimp(2),rimp(3)
 !
-!!..............................................................................
+!eold = etot4
+!call flush(6)
 !
-!   if(mod(iter,pcurr).eq.0) then        ! Save wavefunction for current
-!
-!     ncurr = (iter-iter0+1)/pcurr + icurr
-!      select case (ncurr)
-!       case(1:9)
-!      write(chariter,8011)ncurr
-!       case(10:99)
-!      write(chariter,8012)ncurr
-!       case(100:999)
-!      write(chariter,8013)ncurr
-!      end select
-!      namefile='density.'//chariter//'.dat'
-!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
-!!                     xmax,ymax,zmax,ximp,yimp,zimp,psi,         &
-!!                     deltat,iter)
-!       call printoutc(temps,3,namefile,namefile1,psi,nx,ny,nz,hx,hy,hz, &
-!                    xmax,ymax,zmax,rimp,vimp,psi,         &
-!                    deltatps,iter,invar,ninvar)
-!
-!   endif
-!
-!!    if(mod(iter,pdenpar).eq.0) then        ! Save partial densities
-!!      nsfaux = nsfaux+1
-!!      nsfaux2= nsfaux2+1 ! The same as nsfaux but not in mod(nsfiles)
-!!      if(nsfaux.gt.nsfiles) nsfaux=mod(nsfaux,nsfiles)
-!!      select case(nsfaux)
-!!          case(1:9)
-!!            write(namefile, 8010) nsfaux
-!!            write(namefile1,8015) nsfaux
-!!          case(10:99)
-!!            write(namefile, 8020) nsfaux
-!!            write(namefile1,8025) nsfaux
-!!          case(100:999)
-!!            write(namefile, 8030) nsfaux
-!!            write(namefile1,8035) nsfaux
+!!!-------------------------------------------------------------------------------
+!!!---                            Iterative procedure                           --
+!!!-------------------------------------------------------------------------------
+!!
+!!! TIME CONSTANT !
+!!! This time it's a cylinder.
+!!do iz=1,nz
+!! do iy=1,ny
+!!  do ix=1,nx
+!!!    rt = dsqrt(x(ix)*x(ix)+y(iy)*y(iy)+z(iz)*z(iz))
+!!   rt = dsqrt(x(ix)*x(ix)+y(iy)*y(iy))
+!!!    timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((rt-tmean)/tsurf)),1.d0)
+!!   !timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((z(iz)-tzmean)/tzsurf)),1.d0)
+!!   timec(ix,iy,iz)=cmplx(Lambdah*(1.d0+tanh((abs(z(iz))-tzmean)/tzsurf)),1.d0)
+!!  enddo
+!! enddo
+!!enddo
+!!
+!!
+!!!plot it
+!!! call respar(x,y,z,nx,ny,nz,1,'timec','den',timec,den)
+!!open(unit=32,file='timec.dat')
+!!do iz=1,nz
+!! do ix=1,nx
+!!  write(32,*)x(ix),z(iz),real(timec(ix,ny/2+1,iz))
+!! enddo
+!! write(32,*)''
+!!enddo
+!!close(32)
+!!
+!!open(81,file=filerimp)
+!!open(82,file=filevimp)
+!!open(83,file=fileaimp)
+!!open(84,file=filelambda)
+!!
+!!
+!!! If(limp)Then
+!!!   write(81,1381)iter0*deltat,aux1,aux2,aux3,aux4,aux5,aux6
+!!! Else
+!!
+!!! Endif
+!!call flush(81)
+!!
+!!lfilepv  = .false.
+!!
+!!! write(6,7000)
+!!call timer(t5)
+!!
+!!uext = 0.0d0
+!!
+!!!       print*,rimp
+!!!       print*,vimp
+!!qr(:) = 0.d0
+!!qv(:) = 0.d0
+!!! q(:,:,:)=0.d0
+!!rimpold(:,:) = 0.d0
+!!vimpold(:,:) = 0.d0
+!!aimpold(:,:) = 0.d0
+!!
+!!!
+!!! Eigenvectors of SO matrix (P states)
+!!!
+!!
+!!!  ev1pSO = (/(0.d0,0.d0) , (0.d0,0.d0) , uim        , (0.d0,0.d0), (0.d0,0.d0), (1.d0,0.d0)/)
+!!!  ev2pSO = (/(0.d0,0.d0) , (0.d0,0.d0) , (0.d0,0.d0), -uim       , (-1.d0,0.d0), (0.d0,0.d0)/)
+!!!  ev3pSO = (/-uim        , (0.d0,0.d0) , (0.d0,0.d0), (0.d0,0.d0), (0.d0,0.d0), uim        /)
+!!!  ev4pSO = (/(0.d0,0.d0) , uim	      , (0.d0,0.d0), (0.d0,0.d0), uim        , (0.d0,0.d0)/)
+!!!  ev5pSO = (/(0.d0,0.d0) , (-1.d0,0.d0), (0.d0,0.d0), -uim       , (0.d0,0.d0), (0.d0,0.d0)/)
+!!!  ev6pSO = (/(1.d0,0.d0) , (0.d0,0.d0) , -uim       , (0.d0,0.d0), (0.d0,0.d0), (0.d0,0.d0)/)
+!!! 
+!!!  do i = 1,ninvar
+!!!     evpSO (i,1) = ev1pSO(i)
+!!!     evpSO (i,2) = ev2pSO(i)
+!!!     evpSO (i,3) = ev3pSO(i)
+!!!     evpSO (i,4) = ev4pSO(i)
+!!!     evpSO (i,5) = ev5pSO(i)
+!!!     evpSO (i,6) = ev6pSO(i)
+!!!  end do
+!!
+!! evpSO = (0.d0,0.d0)
+!! 
+!! evpSO(1,3)=-uim
+!! evpSO(2,4)=uim
+!! evpSO(2,5)=(-1.d0,0.d0)
+!! evpSO(1,6)=(1.d0,0.d0)
+!! evpSO(4,5)=-uim
+!! evpSO(3,6)=-uim
+!! 
+!! evpSO(3,1)=uim
+!! evpSO(4,2)=-uim
+!! evpSO(5,2)=(-1.d0,0.d0)
+!! evpSO(6,1)=(1.d0,0.d0)
+!! evpSO(5,4)=uim
+!! evpSO(6,3)=uim
+!!
+!!if(time0 .LT. 0.d0) time0 = iter0*deltatps
+!!write(81,'("# Tiempo(ps), x(AA), y(AA), z(AA)")')
+!!write(81,'(1x,1p,E15.6,3E18.10)')time0, rimp(1), rimp(2), rimp(3)
+!!write(82,'("# Tiempo(ps), Vx(AA/ps), Vy(AA/ps), Vz(AA/ps)")')
+!!write(82,'(1x,1p,E15.6,3E18.10)')time0, vimp(1)*pstoK, vimp(2)*pstoK, vimp(3)*pstoK
+!!write(83,'("# Tiempo(ps), Ax(AA/ps**2), Ay(AA/ps**2), Az(AA/ps**2)")')
+!!write(83,'(1x,1p,E15.6,3E18.10)')time0, aimp(1)*pstoK*pstoK, aimp(2)*pstoK*pstoK, aimp(3)*pstoK*pstoK
+!!write(84,'(I10,1p,20E18.10)')iter0, invar
+!!
+!!open(11,file='projections.dat')
+!!
+!!      prodLambda = 0.d0
+!!      do i=1,ninvar
+!!	prodLambda(i) = DOT_PRODUCT(conjg(invar),evpSO(i,:))
+!!      end do 
+!!	aux1 = DOT_PRODUCT(invar,prodLambda)*0.5
+!!  
+!!      auxn4 = sum(den)*dxyz
+!!   
+!!      write(11,'("# Iteracion, <L·S>, |<Lamb0|Lambt>|**2")')
+!!      write(11,'(I10,1p,2E16.8)') iter0,aux1,ABS(DOT_PRODUCT(invar0,invar))**2
+!!
+!!iter0=iter0+1
+!!
+!!
+!!do iter=iter0,niter  ! <--------- Iterative procedure starts here.
+!!
+!!!    Write(6,'("From Main(2)...")')
+!!!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
+!!!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
+!!!    write(6,'("Invar.....",/,1p,(2E15.8))')(invar(i),i=1,ninvar)
+!!!    write(6,'("Hinvar....",/,1p,(2E15.8))')(Hinvar(i),i=1,ninvar)
+!!
+!!    if(iter.le.(2+iter0).Or.lrk)then
+!!      call steprk(deltat)
+!!
+!!    else
+!!      call steppc(deltat,ErrHe,Errrimp,Errvimp,Erriv)
+!!
+!!      write(6,'(" Steppc: ErrHe, Errrimp, Errvimp, Erriv...",1p,4E15.6)')ErrHe, Errrimp, Errvimp, Erriv
+!!
+!!    endif
+!!
+!!
+!!    call potenimp(rimp,invar)
+!!    call poten()
+!!    call forceimp(rimp,aimp)
+!!    aimp(:) = aimp(:)/mAg_u
+!!    call potinvar(rimp,invar,Hinvar)
+!!
+!!    aux1 = time0 + (iter-iter0+1)*deltatps
+!!    temps = aux1
+!!
+!!write(81,'(1x,1p,E15.6,3E18.10)')aux1, rimp(1), rimp(2), rimp(3)
+!!write(82,'(1x,1p,E15.6,3E18.10)')aux1, vimp(1)*pstoK, vimp(2)*pstoK, vimp(3)*pstoK
+!!write(83,'(1x,1p,E15.6,3E18.10)')aux1, aimp(1)*pstoK*pstoK, aimp(2)*pstoK*pstoK, aimp(3)*pstoK*pstoK
+!!
+!!call flush(81)
+!!call flush(82)
+!!call flush(83)
+!!!
+!!! Proyección < lambda | lambda_SO >
+!!!
+!!
+!!   if(mod(iter,pener).eq.0) then          ! Compute New energy and max of density
+!!   
+!!      prodLambda = 0.d0
+!!      do i=1,ninvar
+!!	prodLambda(i) = DOT_PRODUCT(invar,evpSO(:,i))
+!!      end do 
+!!	aux1 = DOT_PRODUCT(conjg(invar),prodLambda)*0.5
+!!  
+!!      auxn4 = sum(den)*dxyz
+!!      
+!!      write(11,'(I10,1p,2E16.8)') iter,aux1,ABS(DOT_PRODUCT(invar0,invar))**2
+!!   
+!!      call energy()
+!!      print*," "
+!!      print*,"Iteration:", iter
+!!      print*," "
+!!      write(*,*)'... Internal Variables ...'
+!!!       do ix=1,ninvar
+!!!        write(*,'("invar ",I1,1X,2E13.5)')ix,real(invar(ix)),aimag(invar(ix))
+!!!       enddo
+!!      write(*,*)'..........................'
+!!      write(*,*)'Mod of internal vars:',sum(abs(invar)**2)
+!!      
+!!      write(84,'(I10,1p,20E18.10)')iter, invar
+!!      call flush(84)
+!!      write(6,'("Re, Img, Mod: 1,2...",/,(0p,I4,1p,3E16.8))') (ix,real(invar(ix)), aimag(invar(ix)), abs(invar(ix)**2),ix=1,ninvar)
+!!      
+!!      write(6,7010) auxn4,etot4,(etot4-eold),etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+!!!      call varmu(n4,mu4,errmu4)           ! Error in mu4
+!!      write(6,7017) mu4,errmu4
+!!
+!!           write(6,7015) eimpu,ekinx,eHeX,eso,etot
+!!
+!!      eold = etot4
+!!
+!!        call r_cm(den,n4,xcm4,ycm4,zcm4)    ! Center of mass of 4He Drop
+!!        write(6,7100) xcm4,ycm4,zcm4
+!!        write(*,*)'Impurity position:',rimp
+!!        write(*,*)'Impurity velocity:',vimp
+!!
+!!   end if
+!!
+!!!..............................................................................
+!!
+!!   if(mod(iter,pcurr).eq.0) then        ! Save wavefunction for current
+!!
+!!     ncurr = (iter-iter0+1)/pcurr + icurr
+!!      select case (ncurr)
+!!       case(1:9)
+!!      write(chariter,8011)ncurr
+!!       case(10:99)
+!!      write(chariter,8012)ncurr
+!!       case(100:999)
+!!      write(chariter,8013)ncurr
 !!      end select
-!! 
-!! ! Contour plots
-!!       select case (nsfaux2)
-!!        case(1:9)
-!!       write(chariter,8011)nsfaux2
-!!        case(10:99)
-!!       write(chariter,8012)nsfaux2
-!!        case(100:999)
-!!       write(chariter,8013)nsfaux2
-!!       end select
-!! 
-!!      curvfile='curvasnivel.y=0.'//chariter//'.dat'
-!!      open(74,file=curvfile)
-!!      do ix=1,nx
-!!        do iz=1,nz
-!!          write(74,7109) x(ix),z(iz),den(ix,ny/2+1,iz)!,dene(ix,ny/2+1,iz)
-!!        end do
-!!        write(74,7119)
-!!      Enddo
-!!      close(74)
-!! 7109 format(T5,0P,2F15.5,3x,1P,1E15.5)
-!! 7119 format()
-!! 
-!!      if(limp) then
-!!        if(irespar.ne.0) call respar(x,y,z,nx,ny,nz,2,'folding','foldingx',potx4,upotx)
-!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
-!!                     xmax,ymax,zmax,ximp,yimp,zimp,psix,         &
-!!                     deltat,iter)
-!!      else
-!!        call respar(x,y,z,nx,ny,nz,1,'den','den',den,den)
-!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
-!!                     xmax,ymax,zmax,ximp,yimp,zimp,psi,         &
-!!                     deltat,iter)
-!!      end if
-!!    end if
+!!      namefile='density.'//chariter//'.dat'
+!!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
+!!!                     xmax,ymax,zmax,ximp,yimp,zimp,psi,         &
+!!!                     deltat,iter)
+!!       call printoutc(temps,3,namefile,namefile1,psi,nx,ny,nz,hx,hy,hz, &
+!!                    xmax,ymax,zmax,rimp,vimp,psi,         &
+!!                    deltatps,iter,invar,ninvar)
+!!
+!!   endif
+!!
+!!!    if(mod(iter,pdenpar).eq.0) then        ! Save partial densities
+!!!      nsfaux = nsfaux+1
+!!!      nsfaux2= nsfaux2+1 ! The same as nsfaux but not in mod(nsfiles)
+!!!      if(nsfaux.gt.nsfiles) nsfaux=mod(nsfaux,nsfiles)
+!!!      select case(nsfaux)
+!!!          case(1:9)
+!!!            write(namefile, 8010) nsfaux
+!!!            write(namefile1,8015) nsfaux
+!!!          case(10:99)
+!!!            write(namefile, 8020) nsfaux
+!!!            write(namefile1,8025) nsfaux
+!!!          case(100:999)
+!!!            write(namefile, 8030) nsfaux
+!!!            write(namefile1,8035) nsfaux
+!!!      end select
+!!! 
+!!! ! Contour plots
+!!!       select case (nsfaux2)
+!!!        case(1:9)
+!!!       write(chariter,8011)nsfaux2
+!!!        case(10:99)
+!!!       write(chariter,8012)nsfaux2
+!!!        case(100:999)
+!!!       write(chariter,8013)nsfaux2
+!!!       end select
+!!! 
+!!!      curvfile='curvasnivel.y=0.'//chariter//'.dat'
+!!!      open(74,file=curvfile)
+!!!      do ix=1,nx
+!!!        do iz=1,nz
+!!!          write(74,7109) x(ix),z(iz),den(ix,ny/2+1,iz)!,dene(ix,ny/2+1,iz)
+!!!        end do
+!!!        write(74,7119)
+!!!      Enddo
+!!!      close(74)
+!!! 7109 format(T5,0P,2F15.5,3x,1P,1E15.5)
+!!! 7119 format()
+!!! 
+!!!      if(limp) then
+!!!        if(irespar.ne.0) call respar(x,y,z,nx,ny,nz,2,'folding','foldingx',potx4,upotx)
+!!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
+!!!                     xmax,ymax,zmax,ximp,yimp,zimp,psix,         &
+!!!                     deltat,iter)
+!!!      else
+!!!        call respar(x,y,z,nx,ny,nz,1,'den','den',den,den)
+!!!        call printoutc(3,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
+!!!                     xmax,ymax,zmax,ximp,yimp,zimp,psi,         &
+!!!                     deltat,iter)
+!!!      end if
+!!!    end if
+!!
+!!!..............................................................................
+!!
+!!   if(lfilepv) then
+!!     select case(iter)
+!!         case(1:9)
+!!           write(namefile ,5010) iter
+!!           write(namefile1,5015) iter
+!!         case(10:99)
+!!           write(namefile ,5020) iter
+!!           write(namefile1,5025) iter
+!!         case(100:999)
+!!           write(namefile ,5030) iter
+!!           write(namefile1,5035) iter
+!!         case(1000:9999)
+!!           write(namefile ,5040) iter
+!!           write(namefile1,5045) iter
+!!         case(10000:99999)
+!!           write(namefile ,5050) iter
+!!           write(namefile1,5055) iter
+!!         case(100000:999999)
+!!           write(namefile ,5060) iter
+!!           write(namefile1,5065) iter
+!!     end select
+!!
+!!
+!!!      if(limp) then
+!!!         call printoutc(temps,2,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
+!!!                       xmax,ymax,zmax,ximp,yimp,zimp,psix,                   &
+!!!                       deltat,iter)
+!!!      else
+!!        call printoutc(temps,2,namefile,namefile1,psi,nx,ny,nz,hx,hy,hz, &
+!!                      xmax,ymax,zmax,rimp,vimp,psi,                   &
+!!                      deltatps,iter,invar,ninvar)
+!!!      end if
+!!
+!!
+!!   end if
+!!!..............................................................................
+!!
+!!   call timer(t6)                         ! Compute use time
+!!
+!!!    if(mod(iter,pchem).eq.0) then          ! Save partial densities
+!!! !      if(limp) then
+!!! !        write(6,7001)
+!!! !        write(6,7035) iter,mu4,mu4err,epsx,epsxerr,t6,(t6-t5)
+!!! !      else
+!!!        write(6,7000)
+!!!        write(6,7030) iter,mu4,mu4err,t6,(t6-t5)
+!!! !      end if
+!!!    end if
+!!   t5=t6
+!!end do     ! <---- END OF ITERATIVE PROCEDURE
+!!
+!!close(11)
 !
-!!..............................................................................
 !
-!   if(lfilepv) then
-!     select case(iter)
-!         case(1:9)
-!           write(namefile ,5010) iter
-!           write(namefile1,5015) iter
-!         case(10:99)
-!           write(namefile ,5020) iter
-!           write(namefile1,5025) iter
-!         case(100:999)
-!           write(namefile ,5030) iter
-!           write(namefile1,5035) iter
-!         case(1000:9999)
-!           write(namefile ,5040) iter
-!           write(namefile1,5045) iter
-!         case(10000:99999)
-!           write(namefile ,5050) iter
-!           write(namefile1,5055) iter
-!         case(100000:999999)
-!           write(namefile ,5060) iter
-!           write(namefile1,5065) iter
-!     end select
+!! if(limp) then
+!!    call printoutc(1,filedenout,fileimpout,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
+!!                  xmax,ymax,zmax,ximp,yimp,zimp,psix,         &
+!!                  deltat,iter)
+!! else
+!!call printoutc(temps,1,filedenout,fileimpout,psi,nx,ny,nz,hx,hy,hz, &
+!!				xmax,ymax,zmax,rimp,vimp,psi, &
+!!				deltatps,iter,invar,ninvar)
+!! end if
 !
-!
-!!      if(limp) then
-!!         call printoutc(temps,2,namefile,namefile1,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
-!!                       xmax,ymax,zmax,ximp,yimp,zimp,psix,                   &
-!!                       deltat,iter)
-!!      else
-!        call printoutc(temps,2,namefile,namefile1,psi,nx,ny,nz,hx,hy,hz, &
-!                      xmax,ymax,zmax,rimp,vimp,psi,                   &
-!                      deltatps,iter,invar,ninvar)
-!!      end if
-!
-!
-!   end if
-!!..............................................................................
-!
-!   call timer(t6)                         ! Compute use time
-!
-!!    if(mod(iter,pchem).eq.0) then          ! Save partial densities
-!! !      if(limp) then
-!! !        write(6,7001)
-!! !        write(6,7035) iter,mu4,mu4err,epsx,epsxerr,t6,(t6-t5)
-!! !      else
-!!        write(6,7000)
-!!        write(6,7030) iter,mu4,mu4err,t6,(t6-t5)
-!! !      end if
-!!    end if
-!   t5=t6
-!end do     ! <---- END OF ITERATIVE PROCEDURE
-!
-!close(11)
-
-
-! if(limp) then
-!    call printoutc(1,filedenout,fileimpout,psi,elem,nx,ny,nz,hx,hy,hz,limp, &
-!                  xmax,ymax,zmax,ximp,yimp,zimp,psix,         &
-!                  deltat,iter)
-! else
-!call printoutc(temps,1,filedenout,fileimpout,psi,nx,ny,nz,hx,hy,hz, &
-!				xmax,ymax,zmax,rimp,vimp,psi, &
-!				deltatps,iter,invar,ninvar)
-! end if
-
-call timer(t4)
-print *,' Total  ',t4-t0
+!call timer(t4)
+!print *,' Total  ',t4-t0
 
 stop
 999 stop 'DFT3He3d. Error in input master file. Too short'
