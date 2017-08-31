@@ -291,9 +291,9 @@ call dimen()
 rimp = (/ximp,yimp,zimp/)
 vimp = (/vximp,vyimp,vzimp/)
 
-If(L_v_aditional)Then
-  Write(6,'(" We add this velocity (Ang./ps) to the impurity...:",1p, 3E15.6)')vimp
-Endif
+!If(L_v_aditional)Then
+!  Write(6,'(" We add this velocity (Ang./ps) to the impurity...:",1p, 3E15.6)')vimp
+!Endif
 
 xlambda0 = -vimp*mimpur/(4.d0*n4)
 
@@ -363,7 +363,7 @@ pmod1=maxval(pmod)
 pmod2=sqrt(pmaxx**2+pmaxy**2+pmaxz**2)
 
 
-write(6,*) '    Initialize Linear Interpolation for V_Pi and V_Sig'
+!write(6,*) '    Initialize Linear Interpolation for V_Pi and V_Sig'
 call flush(8)
 call potenimpini() ! interpolation + first call to updatepoten
 
@@ -375,7 +375,7 @@ call readenc(n4,densat4,filedenin,fileimpin,mode,instate,rimpur,r_clust)
 
 If(L_v_aditional)Then
   vimp = vimp + vimp0
-  write(6,'(" We impose linear momentum conservation..:",1p,3E15.6)')xlambda0
+  !write(6,'(" We impose linear momentum conservation..:",1p,3E15.6)')xlambda0
   xlambda0 = xlambda0*Ktops/(2.d0*h2o2m4)
    do iz=1,nz
      do iy=1,ny
@@ -418,18 +418,18 @@ select case(mode)
 !       if(limp) then
 !          write(6,6111) filedenin,filedenout,fileimpin,fileimpout
 !       else
-         write(6,6011) filedenin,filedenout
+         !write(6,6011) filedenin,filedenout
 !       end if
    case(1) !................................... Continue a dynamic calculation from a prevous one (non-excited)
-      write(6,6013) filedenout,fileimpout
+      !write(6,6013) filedenout,fileimpout
    case(2) !................................... Continue a dynamic calculation from a prevous one
-      write(6,6013) filedenout,fileimpout
+      !write(6,6013) filedenout,fileimpout
    case(3) !................................... Continue a dynamic calculation from a prevous one
-      write(6,6013) filedenout,fileimpout
-      write(6,*) ' '
+      !write(6,6013) filedenout,fileimpout
+      !write(6,*) ' '
    case default !.............................. Start still not programed.
-      write(6,*) ' The variable mode has no acceptable value.'
-      write(6,*) ' '
+      !write(6,*) ' The variable mode has no acceptable value.'
+      !write(6,*) ' '
       stop
 end select
 
@@ -437,16 +437,16 @@ end select
 !................................ Write the input parameters ...
 !...............................................................
 
-write(6,6018) nthread,niter
-if(mode.ne.0) then
-  write(6,6020) n4,r_clust
-else
-  write(6,6025) n4
-end if
-write(6,6030) nx,ny,nz,hx, hy, hz, x(1) ,y(1) ,z(1) ,x(nx),y(ny),z(nz)
-write(6,6035)          hpx,hpz,hpz,px(1),py(1),pz(1),pmaxx,pmaxy,pmaxz,&
-                       pmod1,pmod2
-write(6,6037) cp4,cpp4,den4c,alphas,l,den0s,h2o2m4
+!write(6,6018) nthread,niter
+!if(mode.ne.0) then
+!  write(6,6020) n4,r_clust
+!else
+!  write(6,6025) n4
+!end if
+!write(6,6030) nx,ny,nz,hx, hy, hz, x(1) ,y(1) ,z(1) ,x(nx),y(ny),z(nz)
+!write(6,6035)          hpx,hpz,hpz,px(1),py(1),pz(1),pmaxx,pmaxy,pmaxz,&
+!                       pmod1,pmod2
+!write(6,6037) cp4,cpp4,den4c,alphas,l,den0s,h2o2m4
 
 
 !...............
@@ -462,18 +462,18 @@ write(6,6037) cp4,cpp4,den4c,alphas,l,den0s,h2o2m4
 select case(core4)
    case('OP ')
      h4=h4op
-     write(6,*) '    Use Orsay-Paris-Barcelona Interaction.'
-     write(6,6040) core4,h4,eps4,sigma4,b4
+     !write(6,*) '    Use Orsay-Paris-Barcelona Interaction.'
+     !write(6,6040) core4,h4,eps4,sigma4,b4
    case('OT ')
      h4=h4ot
-     write(6,*) '    Use Orsay-Trento Interaction. (ONLY CORE)'
-     write(6,*) '    Do not calculate Alpha_s in the field neither energy.'
-     write(6,6040) core4,h4,eps4,sigma4,b4
+     !write(6,*) '    Use Orsay-Trento Interaction. (ONLY CORE)'
+     !write(6,*) '    Do not calculate Alpha_s in the field neither energy.'
+     !write(6,6040) core4,h4,eps4,sigma4,b4
    case('OTC')
      h4=h4ot
-     write(6,*) '    Use Orsay-Trento Interaction.'
-     write(6,*) '    Full Orsay-Trento calculation. (Field and Energy)'
-     write(6,6040) core4,h4,eps4,sigma4,b4
+     !write(6,*) '    Use Orsay-Trento Interaction.'
+     !write(6,*) '    Full Orsay-Trento calculation. (Field and Energy)'
+     !write(6,6040) core4,h4,eps4,sigma4,b4
 !     allocate( denalf(nx  ,ny,nz))                                                            
      allocate(  falfs(nx  ,ny,nz))
      allocate(kalfs(nx/2+1,ny,nz))
@@ -652,16 +652,16 @@ ipz = 1.5 +(rimp(3)+zmax)/hz
 !EndDo
 !Close(Unit=1)
 
-write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
+!write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 
-write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+!write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
 write(6,6060) eimpu,ekinx,eHeX,eso,etot
 write(6,6065) rimp(1),rimp(2),rimp(3)
-do iz=1,10
+do iz=1,100
 	rimp(3)=rimp(3)+hz
 	call potenimp(rimp,invar)
 	call energy()
-	write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+!	write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
 	write(6,6060) eimpu,ekinx,eHeX,eso,etot
 	write(6,6065) rimp(1),rimp(2),rimp(3)
 end do
