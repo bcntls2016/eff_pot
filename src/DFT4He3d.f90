@@ -605,10 +605,10 @@ EndiF
 call forceimp(rimp,aimp)
 aimp(:) = aimp(:)/mAg_u
 call potinvar(rimp,invar,Hinvar)
-!
-!
-!Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
-!
+
+
+Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
+
 !!    Write(6,'("From Main(1)...")')
 !!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
 !!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
