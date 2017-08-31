@@ -565,43 +565,43 @@ den=Conjg(psi)*psi
 call potenimp(rimp,invar)
 call poten()              ! First Potential  (for Lagrange Equation)
 call energy()             ! Calculate energies
+
+Lfirst = .false.
+Lprint_invar=.false.
+
+If(Ev0.Eq.0.0d0)Ev0 = eHeX + eso
+
+Write(6,'("Energia que fem servir per restar una fase global",/,                 &
+          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
+If(Lfilter_exciplex_force)Then
+  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
+
+  ipx = 1.5 +(rimp(1)+xmax)/hx
+  ipy = 1.5 +(rimp(2)+ymax)/hy
+  ipz = 1.5 +(rimp(3)+zmax)/hz
 !
-!Lfirst = .false.
-!Lprint_invar=.false.
+!  Open(Unit = 1, File='uimp-x.0.dat')
+!  Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
+!  Do ix=1, nx
+!    Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
+!  EndDo
+!  Close(Unit=1)
 !
-!If(Ev0.Eq.0.0d0)Ev0 = eHeX + eso
+!  Open(Unit = 1, File='uimp-y.0.dat')
+!  Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
+!  Do iy=1, ny
+!    Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
+!  EndDo
+!  Close(Unit=1)
 !
-!Write(6,'("Energia que fem servir per restar una fase global",/,                 &
-!          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
-!If(Lfilter_exciplex_force)Then
-!  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
-!
-!ipx = 1.5 +(rimp(1)+xmax)/hx
-!ipy = 1.5 +(rimp(2)+ymax)/hy
-!ipz = 1.5 +(rimp(3)+zmax)/hz
-!!
-!!  Open(Unit = 1, File='uimp-x.0.dat')
-!!  Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
-!!  Do ix=1, nx
-!!    Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
-!!  EndDo
-!!  Close(Unit=1)
-!!
-!!  Open(Unit = 1, File='uimp-y.0.dat')
-!!  Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
-!!  Do iy=1, ny
-!!    Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
-!!  EndDo
-!!  Close(Unit=1)
-!!
 !  Open(Unit = 1, File='uHe_He-z.0.dat')
 !  Write(1,'("#z, uHe_He( rimp(1), rimp(2), z )")')
 !  Do iz=1, nz
 !    Write(1,'(1p,2E15.6)')z(iz),UHe_He(ipx,ipy,iz)
 !  EndDo
 !  Close(Unit=1)
-!EndiF
-!
+EndiF
+
 !call forceimp(rimp,aimp)
 !aimp(:) = aimp(:)/mAg_u
 !call potinvar(rimp,invar,Hinvar)
