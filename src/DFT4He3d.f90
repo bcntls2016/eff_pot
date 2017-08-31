@@ -659,6 +659,7 @@ write(6,6060) eimpu,ekinx,eHeX,eso,etot
 write(6,6065) rimp(1),rimp(2),rimp(3)
 do iz=1,100
 	rimp(3)=rimp(3)+hz
+	z_exciplex_exclusion=z_exciplex_exclusion+hz
 	call potenimp(rimp,invar)
 	call energy()
 !	write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
