@@ -571,10 +571,10 @@ Lprint_invar=.false.
 
 If(Ev0.Eq.0.0d0)Ev0 = eHeX + eso
 
-Write(6,'("Energia que fem servir per restar una fase global",/,                 &
-          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
+!Write(6,'("Energia que fem servir per restar una fase global",/,                 &
+!          "per la evolució dels estats interns. Ev0........:",1p,E15.6)')Ev0
 If(Lfilter_exciplex_force)Then
-  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
+!  Write(6,'("From potenimpini: We will use ",(A)," for He-He interaction")')Trim(selec_gs)
 
   ipx = 1.5 +(rimp(1)+xmax)/hx
   ipy = 1.5 +(rimp(2)+ymax)/hy
@@ -607,7 +607,7 @@ aimp(:) = aimp(:)/mAg_u
 call potinvar(rimp,invar,Hinvar)
 
 
-Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
+!Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
 
 !    Write(6,'("From Main(1)...")')
 !    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
@@ -654,9 +654,9 @@ ipz = 1.5 +(rimp(3)+zmax)/hz
 
 write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 
-  write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
-  write(6,6060) eimpu,ekinx,eHeX,eso,etot
-  write(6,6065) rimp(1),rimp(2),rimp(3)
+write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+write(6,6060) eimpu,ekinx,eHeX,eso,etot
+!write(6,6065) rimp(1),rimp(2),rimp(3)
 
 !eold = etot4
 !call flush(6)
