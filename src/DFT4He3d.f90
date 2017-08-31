@@ -553,7 +553,7 @@ If(mode.eq.0)then
        end do
      end do
    end do
-Endif
+Endiff
 !.................................
 !.. First call to total energy ...
 !.................................
@@ -656,6 +656,18 @@ write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 
 write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
 write(6,6060) eimpu,ekinx,eHeX,eso,etot
+write(6,6065) rimp(1),rimp(2),rimp(3)
+do iz=1,10
+	rimp(3)=rimp(3)+hz
+	call potenimp(rimp,invar)
+	call energy()
+	write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+	write(6,6060) eimpu,ekinx,eHeX,eso,etot
+	write(6,6065) rimp(1),rimp(2),rimp(3)
+end do
+
+
+
 !write(6,6065) rimp(1),rimp(2),rimp(3)
 
 !eold = etot4
