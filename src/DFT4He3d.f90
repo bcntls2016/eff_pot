@@ -401,7 +401,7 @@ Endif
 !    if(limp) then
 !       call respar(x,y,z,nx,ny,nz,2,'hedenini','impurdenini',den,denx)
 !    else
-      call respar(x,y,z,nx,ny,nz,1,'hedenini','hedenini',den,den)
+!      call respar(x,y,z,nx,ny,nz,1,'hedenini','hedenini',den,den)
 !    end if
 ! end if
 
@@ -602,9 +602,9 @@ If(Lfilter_exciplex_force)Then
 !  Close(Unit=1)
 EndiF
 
-!call forceimp(rimp,aimp)
-!aimp(:) = aimp(:)/mAg_u
-!call potinvar(rimp,invar,Hinvar)
+call forceimp(rimp,aimp)
+aimp(:) = aimp(:)/mAg_u
+call potinvar(rimp,invar,Hinvar)
 !
 !
 !Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
