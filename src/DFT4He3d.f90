@@ -609,55 +609,55 @@ call potinvar(rimp,invar,Hinvar)
 
 Write(6,'("Variables internas....:",/,1p,(2E15.6))')invar
 
-!!    Write(6,'("From Main(1)...")')
-!!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
-!!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
-!!    write(6,'("Invar.....",/,1p,(2E15.8))')(invar(i),i=1,ninvar)
-!!    write(6,'("Hinvar....",/,1p,(2E15.8))')(Hinvar(i),i=1,ninvar)
+!    Write(6,'("From Main(1)...")')
+!    write(6,'("rimp(1,2,3)..",1p,3e15.6)')rimp
+!    write(6,'("vimp(1,2,3)..",1p,3e15.6)')vimp
+!    write(6,'("Invar.....",/,1p,(2E15.8))')(invar(i),i=1,ninvar)
+!    write(6,'("Hinvar....",/,1p,(2E15.8))')(Hinvar(i),i=1,ninvar)
+
+
+! TEST: Treu el valor de uimp
+!call respar(x,y,z,nx,ny,nz,1,'uimp','den',uimp,den)
+
 !
+! Escrivim el valor de Uimp pels aixos que passen per l'impureça
 !
-!! TEST: Treu el valor de uimp
-!!call respar(x,y,z,nx,ny,nz,1,'uimp','den',uimp,den)
+
+ipx = 1.5 +(rimp(1)+xmax)/hx
+ipy = 1.5 +(rimp(2)+ymax)/hy
+ipz = 1.5 +(rimp(3)+zmax)/hz
+
+!ipx = nx/2 + 1
+!ipy = ny/2 + 1
+!ipz = nz/2 + 1
+
+!Open(Unit = 1, File='uimp-x.0.dat')
+!Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
+!Do ix=1, nx
+!  Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
+!EndDo
+!Close(Unit=1)
 !
-!!
-!! Escrivim el valor de Uimp pels aixos que passen per l'impureça
-!!
+!Open(Unit = 1, File='uimp-y.0.dat')
+!Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
+!Do iy=1, ny
+!  Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
+!EndDo
+!Close(Unit=1)
 !
-!ipx = 1.5 +(rimp(1)+xmax)/hx
-!ipy = 1.5 +(rimp(2)+ymax)/hy
-!ipz = 1.5 +(rimp(3)+zmax)/hz
-!
-!!ipx = nx/2 + 1
-!!ipy = ny/2 + 1
-!!ipz = nz/2 + 1
-!
-!!Open(Unit = 1, File='uimp-x.0.dat')
-!!Write(1,'("#x,uimp( x, rimp(2), rimp(3) )")')
-!!Do ix=1, nx
-!!  Write(1,'(1p,2E15.6)')x(ix),Uimp(ix,ipy,ipz)
-!!EndDo
-!!Close(Unit=1)
-!!
-!!Open(Unit = 1, File='uimp-y.0.dat')
-!!Write(1,'("#y,uimp( rimp(1), y, rimp(3) )")')
-!!Do iy=1, ny
-!!  Write(1,'(1p,2E15.6)')y(iy),Uimp(ipx,iy,ipz)
-!!EndDo
-!!Close(Unit=1)
-!!
-!!Open(Unit = 1, File='uimp-z.0.dat')
-!!Write(1,'("#z, uimp( rimp(1), rimp(2), z )")')
-!!Do iz=1, nz
-!!  Write(1,'(1p,2E15.6)')z(iz),Uimp(ipx,ipy,iz)
-!!EndDo
-!!Close(Unit=1)
-!
-!write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
-!
-!  write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
-!  write(6,6060) eimpu,ekinx,eHeX,eso,etot
-!  write(6,6065) rimp(1),rimp(2),rimp(3)
-!
+!Open(Unit = 1, File='uimp-z.0.dat')
+!Write(1,'("#z, uimp( rimp(1), rimp(2), z )")')
+!Do iz=1, nz
+!  Write(1,'(1p,2E15.6)')z(iz),Uimp(ipx,ipy,iz)
+!EndDo
+!Close(Unit=1)
+
+write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
+
+  write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
+  write(6,6060) eimpu,ekinx,eHeX,eso,etot
+  write(6,6065) rimp(1),rimp(2),rimp(3)
+
 !eold = etot4
 !call flush(6)
 !
