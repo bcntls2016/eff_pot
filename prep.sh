@@ -8,7 +8,7 @@ UMAX_PLUS=3.5d3
 
 cp -v ${INPUT} input.dat
 sed -i "/filedenin/c\ filedenin\t\t= 'djogger.dat'" input.dat
-sed -i "/mode/c\ mode\t\t= 3" input.dat
+sed -i "/mode/c\ mode\t\t\t= 3" input.dat
 sed -i "/\&input/a\ selec_plus\t\t= '${X_PLUS}'\n \
 r_cutoff_plus\t\t= ${R_CUTOFF_PLUS}\n \
 umax_plus\t\t= ${UMAX_PLUS}" input.dat
