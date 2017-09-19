@@ -10,7 +10,7 @@
 
 
 subroutine energy()
-
+Use seleccio_de_potencial
 use para_derivnd
 use alphasterm
 use deriva
