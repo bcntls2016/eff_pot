@@ -16,7 +16,6 @@ use alphasterm
 use deriva
 use energies
 use field
-! use impur
 use classicimp
 use lenard4
 use grid
@@ -30,6 +29,8 @@ implicit none
 
 real (kind=8)    ::  aux1,aux2,aux3,aux4,aux5,r ! Auxiliar variables
 real (kind=8)	 :: rXHe(3)
+real (kind=8)	 :: Select_Pot		! Function to select the potential
+
 complex (kind=8) :: invars(10), vlsaux
 integer (kind=4) :: ix,iy,iz,i,j, np=6, nd=10
 
