@@ -28,7 +28,8 @@ use work1
 
 implicit none
 
-real (kind=8)    ::  aux1,aux2,aux3,aux4,aux5 ! Auxiliar variables
+real (kind=8)    ::  aux1,aux2,aux3,aux4,aux5,r ! Auxiliar variables
+real (kind=8)	 :: rXHe(3)
 complex (kind=8) :: invars(10), vlsaux
 integer (kind=4) :: ix,iy,iz,i,j, np=6, nd=10
 

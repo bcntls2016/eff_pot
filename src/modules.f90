@@ -31,6 +31,7 @@ real    (kind=8)              :: eimpu            ! Impurity energy
 real    (kind=8)              :: eHeX             ! Interaction He-X energy
 real    (kind=8)              :: eso              ! Spin-Orbit contribution
 real    (kind=8)              :: esolid           ! Solid term
+real    (kind=8)              :: uplus            ! Interaction He-X+ energy
 end module energies
 !------------------------------------------------------------------
 module field
