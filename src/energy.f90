@@ -109,8 +109,8 @@ etot4    =  etot4 + sum(uext*den)*dxyz
  ekinx = 0.5d0*mAg_u*sum(vimp*vimp)
  eHeX = sum(uimp*den)*dxyz
 
- !$OMP PARALLEL PRIVATE(ix,iy,iz,rXHe,r)
- !$OMP DO REDUCTION(+:uplus)  
+ !!$OMP PARALLEL PRIVATE(ix,iy,iz,rXHe,r)
+ !!$OMP DO REDUCTION(+:uplus)  
  DO iz=1,nz
  	 DO iy = 1,ny
 		 DO ix = 1,nx	    
@@ -122,8 +122,8 @@ etot4    =  etot4 + sum(uext*den)*dxyz
 		 END DO
 	 END DO
  END DO
- !$OMP END DO
- !$OMP END PARALLEL    
+ !!$OMP END DO
+ !!$OMP END PARALLEL    
  uplus = uplus * dxyz
 
 
