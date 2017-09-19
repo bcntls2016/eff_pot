@@ -2,6 +2,10 @@
 
 INPUT=$1
 
+X_PLUS='Rb_Plus'
+R_CUTOFF_PLUS=2.5d0
+UMAX_PLUS=3.5d3
+
 cp -v ${INPUT} input.dat
 sed -i "/filedenin/c\ filedenin = 'djogger.dat'" input.dat
 sed -i "/mode/c\ mode = 3" input.dat
