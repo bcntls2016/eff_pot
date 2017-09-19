@@ -11,6 +11,9 @@ module seleccio_de_potencial
       Character (Len=80) :: selec_delta='Ba_plus_2D2'
       Real      (Kind=8) :: r_cutoff_delta=1.05d0
       Real      (Kind=8) :: umax_delta=6.260015d4
+      Character (Len=80) :: selec_plus='Ba_plus_2D2'
+      Real      (Kind=8) :: r_cutoff_plus=1.05d0
+      Real      (Kind=8) :: umax_plus=6.260015d4
 end module seleccio_de_potencial
 
 Module Modificacio_De_Select_Pot

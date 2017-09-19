@@ -119,9 +119,9 @@ namelist /input/title,fftwplan,nthread,nsfiles,                         &
                 xlamdax_x,xlamdax_y,xlamdax_z,iter0,time0,Zsurf,        &
                 pcurr,icurr,lsurf,lsurf3D,Lambdah,tzmean,tzsurf,        &
                 vximp,vyimp,vzimp,ndmax,ninvar,                         &
-                selec_gs,selec_pi,selec_sigma,selec_delta,              &
-                r_cutoff_gs,r_cutoff_pi,r_cutoff_sigma,r_cutoff_delta,  &
-                umax_gs,umax_pi,umax_sigma,umax_delta,Ev0,              &
+                selec_gs,selec_pi,selec_sigma,selec_delta,selec_plus,   &
+                r_cutoff_gs,r_cutoff_pi,r_cutoff_sigma,r_cutoff_delta,r_cutoff_plus, &
+                umax_gs,umax_pi,umax_sigma,umax_delta,umax_plus,Ev0,    &
                 Lexcite_state,instate,Als_P,Als_D,                      &
                 Lexcite_state_fix,Lexciplex_axis,                       &
                 Quita_C4_Ba_plus_gs_fix_C4,                             &

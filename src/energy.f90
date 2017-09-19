@@ -109,6 +109,24 @@ etot4    =  etot4 + sum(uext*den)*dxyz
  ekinx = 0.5d0*mAg_u*sum(vimp*vimp)
  eHeX = sum(uimp*den)*dxyz
 
+ !$OMP PARALLEL PRIVATE(ix,iy,iz,rXHe,r)
+ !$OMP DO REDUCTION(+:uplus)  
+ DO iz=1,nz
+ 	 DO iy = 1,ny
+		 DO ix = 1,nx	    
+			 rXHe(1) = rimp(1) - x(ix)
+			 rXHe(2) = rimp(2) - y(iy)
+			 rXHe(3) = rimp(3) - z(iz)
+			 r = sqrt(sum(rXHe * rXHe))
+			 uplus = uplus + (den(ix,iy,iz) * Select_Pot(selec_plus,r,r_cutoff_plus	,umax_plus))
+		 END DO
+	 END DO
+ END DO
+ !$OMP END DO
+ !$OMP END PARALLEL    
+ uplus = uplus * dxyz
+
+
 !
 ! Spin-Orbit contribution:
 !
