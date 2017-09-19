@@ -468,6 +468,7 @@ write(6,6065) rimp(1),rimp(2),rimp(3)
 !	write(6,6060) eimpu,ekinx,eHeX,eso,etot
 !	write(6,6065) rimp(1),rimp(2),rimp(3)
 !end do
+write(*,*) "UPLUS.............: ", uplus
 
 stop
 999 stop 'DFT3He3d. Error in input master file. Too short'
