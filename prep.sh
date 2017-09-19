@@ -2,9 +2,9 @@
 
 INPUT=$1
 
-X_PLUS='Rb_Plus'
-R_CUTOFF_PLUS=2.5d0
-UMAX_PLUS=3.5d3
+X_PLUS='Rb_plus_Koutselos'
+R_CUTOFF_PLUS=2.d0
+UMAX_PLUS=6.1105922888E+03
 
 cp -v ${INPUT} input.dat
 sed -i "/filedenin/c\ filedenin\t\t= 'djogger.dat'" input.dat
