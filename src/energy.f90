@@ -127,7 +127,6 @@ etot4    =  etot4 + sum(uext*den)*dxyz
  !$OMP END DO
  !$OMP END PARALLEL    
  uplus = uplus * dxyz
- write(*,*) "WAAAAAAAAAAAAAAAAAAAAA:     ", uplus
 
 !
 ! Spin-Orbit contribution:

@@ -457,7 +457,7 @@ ipz = 1.5 +(rimp(3)+zmax)/hz
 
 write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
-write(6,6060) eimpu,ekinx,eHeX,eso,etot
+write(6,6060) eimpu,ekinx,eHeX,uplus,eso,etot
 write(6,6065) rimp(1),rimp(2),rimp(3)
 !do iz=1,100
 !	rimp(3)=rimp(3)+hz
@@ -468,7 +468,6 @@ write(6,6065) rimp(1),rimp(2),rimp(3)
 !	write(6,6060) eimpu,ekinx,eHeX,eso,etot
 !	write(6,6065) rimp(1),rimp(2),rimp(3)
 !end do
-write(*,*) "UPLUS.............: ", uplus
 
 stop
 999 stop 'DFT3He3d. Error in input master file. Too short'
@@ -561,7 +560,8 @@ T6,'Title of the run: ',A)
                T5,'Correlation energy   (He) ....: ',F18.6,' K')
 6060 format(1x,T5,'Impurity energy (X) ..........: ',F18.6,' K',/,    &
                T5,'Kinetic energy (X) ...........: ',F18.6,' K',/,    &
-               T5,'Interaction energy (X-He) ....: ',F18.6,' K',/,    &
+               T5,'Interaction energy (X*-He) ...: ',F18.6,' K',/,    &
+               T5,'Interaction energy (X+-He) ...: ',F18.6,' K',/,    &
                T5,'Spin-Orbit energy (X) ........: ',F18.6,' K',/,    &
                T5,'TOTAL ENERGY (He+X) ..........: ',F18.6,' K',/)
 6065 format(1x,T5,'Impurity location  (x-axix) ..: ',F18.6,' A',/,    &
