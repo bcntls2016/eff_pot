@@ -120,7 +120,9 @@ etot4    =  etot4 + sum(uext*den)*dxyz
 			 rXHe(2) = rimp(2) - y(iy)
 			 rXHe(3) = rimp(3) - z(iz)
 			 r = sqrt(sum(rXHe * rXHe))
-			 uplus = uplus + (den(ix,iy,iz) * Select_Pot(selec_plus,r,r_cutoff_plus	,umax_plus))
+			 if (r >= 5.7) then
+			 	uplus = uplus + (den(ix,iy,iz) * Select_Pot(selec_plus,r,r_cutoff_plus	,umax_plus))
+			 endif
 		 END DO
 	 END DO
  END DO
