@@ -405,6 +405,8 @@ end if
 ! Initial velocity : Altough xlamdax_i is in K units, xlamda
 ! is introduced in Angstrom/picosecond for the sake of lazyness.
 auxn4 = sum(den)*dxyz
+call r_cm(den,auxn4,xcm4,ycm4,zcm4)
+
 
 if(xlamda.ne.0.d0)then
 write(*,*)'xlambda not equal zero'
@@ -454,8 +456,6 @@ call potinvar(rimp,invar,Hinvar)
 ipx = 1.5 +(rimp(1)+xmax)/hx
 ipy = 1.5 +(rimp(2)+ymax)/hy
 ipz = 1.5 +(rimp(3)+zmax)/hz
-
-call r_cm(den,auxn4,xcm4,ycm4,zcm4)
 
 write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
