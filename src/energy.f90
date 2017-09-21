@@ -108,7 +108,9 @@ etot4    =  etot4 + sum(uext*den)*dxyz
 
 ! Classic vecotrial particle energy:
  ekinx = 0.5d0*mAg_u*sum(vimp*vimp)
- 
+
+	integer (kind=4) :: ir
+	real (kind=8) :: radius,sum_star_sum_plus
  	open(100,file='eff_pot-int_radius.dat')
 	do ir = 0,75 ! 30 AA / 0.4 AA = 75
 		radius = 0.4*ir
