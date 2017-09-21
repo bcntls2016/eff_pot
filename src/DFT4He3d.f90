@@ -405,7 +405,7 @@ end if
 ! Initial velocity : Altough xlamdax_i is in K units, xlamda
 ! is introduced in Angstrom/picosecond for the sake of lazyness.
 auxn4 = sum(den)*dxyz
-call r_cm(den,auxn4,xcm4,ycm4,zcm4)
+call r_cm(den,n4,xcm4,ycm4,zcm4)
 
 
 if(xlamda.ne.0.d0)then
