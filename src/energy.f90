@@ -34,7 +34,7 @@ real (kind=8)	 :: Select_Pot		! Function to select the potential
 complex (kind=8) :: invars(10), vlsaux
 integer (kind=4) :: ix,iy,iz,i,j, np=6, nd=10
 integer (kind=4) :: ir
-real (kind=8) :: radius,sum_star_sum_plus
+real (kind=8) :: radius,sum_star,sum_plus
 
 
 
