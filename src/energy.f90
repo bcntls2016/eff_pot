@@ -108,10 +108,39 @@ etot4    =  etot4 + sum(uext*den)*dxyz
 
 ! Classic vecotrial particle energy:
  ekinx = 0.5d0*mAg_u*sum(vimp*vimp)
-! eHeX = sum(uimp*den)*dxyz
+ 
+ 	open(100,file='eff_pot-int_radius.dat')
+	do ir = 0,75 ! 30 AA / 0.4 AA = 75
+		radius = 0.4*ir
+		sum_star = 0
+		sum_plus = 0
+		!$omp parallel private(ix,iy,iz,rXHe,r)
+		!$omp do reduction(+:sum_star,sum_plus)
+		do iz = 1,nz
+			do iy = 1,ny
+				do ix = 1,nx
+					rXHe(1) = rimp(1) - x(ix)
+					rXHe(2) = rimp(2) - y(iy)
+					rXHe(3) = rimp(3) - z(iz)
+					r = sqrt(sum(rXHe * rXHe))	
+					if (r <= radius) then
+						sum_star = sum_star + den(ix,iy,iz) * uimp(ix,iy,iz)
+						sum_plus = sum_plus + den(ix,iy,iz) * Select_Pot(selec_plus,r,r_cutoff_plus,umax_plus)
+					end if
+				end do
+			end do
+		end do
+		!$omp end do
+		!$omp end parallel
+		sum_star = sum_star * dxyz
+		sum_plus = sum_plus * dxyz
+		write (100,*) radius, sum_star, sum_plus
+	end do
+	close(100)
+ 
 
  !$OMP PARALLEL PRIVATE(ix,iy,iz,rXHe,r)
- !$OMP DO REDUCTION(+:uplus)  
+ !$OMP DO REDUCTION(+:uplus,eHeX)  
  DO iz=1,nz
  	 DO iy = 1,ny
 		 DO ix = 1,nx	    
