@@ -455,6 +455,8 @@ ipx = 1.5 +(rimp(1)+xmax)/hx
 ipy = 1.5 +(rimp(2)+ymax)/hy
 ipz = 1.5 +(rimp(3)+zmax)/hz
 
+call r_cm(den,auxn4,xcm4,ycm4,zcm4)
+
 write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
 write(6,6060) eimpu,ekinx,eHeX,uplus,eso,etot
