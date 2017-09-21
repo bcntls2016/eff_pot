@@ -112,7 +112,7 @@ etot4    =  etot4 + sum(uext*den)*dxyz
  ekinx = 0.5d0*mAg_u*sum(vimp*vimp)
 
  	open(100,file='eff_pot-int_radius.dat')
-	do ir = 0,75 ! 30 AA / 0.4 AA = 75
+	do ir = 0,125 ! 30 AA / 0.4 AA = 75
 		radius = 0.4*ir
 		sum_star = 0
 		sum_plus = 0
