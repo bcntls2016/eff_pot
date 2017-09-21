@@ -460,8 +460,6 @@ ipz = 1.5 +(rimp(3)+zmax)/hz
 write(6,'("Number of He4 atoms",1P,E15.6)')auxn4
 write(6,6050) auxn4,etot4,etot4/auxn4,ekin4,elj4,ealphas,esolid,ecor4
 write(6,6060) eimpu,ekinx,eHeX,uplus,eso,etot
-write(6,6065) rimp(1),rimp(2),rimp(3)
-write(6,6065) xcm4,ycm4,zcm4
 write(6,*) "X-HE CoM distance: ", sqrt((rimp(1)-xcm4)**2+(rimp(2)-ycm4)**2+(rimp(3)-zcm4)**2)
 !do iz=1,100
 !	rimp(3)=rimp(3)+hz
