@@ -12,3 +12,4 @@ sed -i "/mode/c\ mode\t\t\t= 3" input.dat
 sed -i "/\&input/a\ selec_plus\t\t= '${X_PLUS}'\n \
 r_cutoff_plus\t\t= ${R_CUTOFF_PLUS}\n \
 umax_plus\t\t= ${UMAX_PLUS}" input.dat
+sed -i "/L_v_aditional/c\ L_v_aditional\t\t= .false." input.dat
